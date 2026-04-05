@@ -51,10 +51,9 @@ class TaskManager:
         
     @staticmethod
     def taskGen(x):
-        id = idList[random.randint(0, len(idList) - 1)]
         for i in range(x):
+            id = idList[random.randint(0, len(idList) - 1)]
             yield task(id, "F", "Waiting", random.randint(1, 5), "N/A")
-            id += 1
             
         
         
@@ -104,7 +103,7 @@ class task:
         self.__dueDate = x
         
     def __str__(self):
-        return f"Identifier: {self.__identifier} name: {self.__name} Status: {self.__status} priority: {self.__priority} dueDate = {self.__dueDate} \n"
+        return f"Identifier: {self.__identifier},   name: {self.__name},    Status: {self.__status},    priority: {self.__priority},    dueDate = {self.__dueDate}\n"
 
 
 def generate(x):
@@ -125,10 +124,15 @@ while True:
         continue
     
     if choice == 1:
+        print(f"\n")
         print(*TaskManager.taskList)
         
     elif choice==2:
+        if not TaskManager.taskList:
+            continue
+
         firstHighest = 0
+        
         for index, obj in enumerate(TaskManager.taskList):
             if TaskManager.taskList[index].priority > TaskManager.taskList[firstHighest].priority:
                 firsthighest = index
@@ -145,15 +149,16 @@ while True:
         
     elif choice == 4:
         print("enter the id of a task you want to remove")
-        try:
-            id = int(input())
-        except ValueError:
-            print("choose correctly")
-            continue
+        id = input()
+        removed = False
         for i in TaskManager.taskList:
             if i.identifier == id:
                 TaskManager.removeTask(i)
+                removed = True
                 break
+        if removed != True:
+            print("No process with that id found")
+            continue
             
     elif choice == 5:
         print("exiting...")
